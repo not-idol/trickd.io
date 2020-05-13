@@ -1,3 +1,4 @@
+require("./parser");
 const path = require("path");
 const express = require("express");
 const config = require("./config");
