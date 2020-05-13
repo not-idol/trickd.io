@@ -17,3 +17,8 @@ app.get("*", function (req, res) {
 });
 
 app.listen(PORT);
+
+const Room = require("./room");
+var r = new Room("abcdef");
+r.generateQuestionSequence();
+console.log(r.questionSequence);

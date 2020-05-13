@@ -38,13 +38,16 @@ module.exports = class Room {
   }
 
   generateQuestionSequence() {
-    var array = [];
-    for (let i = 0; i < 100; i++) {
-      array[i] = i;
+    var fs = require('fs')
+    var catalog = JSON.parse(fs.readFileSync('./catalog.json', 'utf8'));
+    var selected = [];
+    for (let i = 0; i < catalog.length; i++) {
+      selected[i] = i;
     }
-    array = this.shuffle(array);
-    for(let i = 0; i < this.settings.NumberOfQuestions; i++) {
-      this._questionSequence[i] = array[i];
+    selected = this.shuffle(selected);
+    var l = Math.min(this.settings.NumberOfQuestions, catalog.length)
+    for(let i = 0; i < l; i++) {
+      this._questionSequence[i] = catalog[selected[i]];
     }
   }
 
