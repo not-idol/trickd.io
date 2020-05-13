@@ -1,12 +1,13 @@
 require("./parser");
+const config = require("./config");
 const path = require("path");
 const express = require("express");
-const config = require("./config");
+const app = express();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
 
 const DIST_DIR = path.join(__dirname, "dist");
 const PORT = config.port;
-
-const app = express();
 
 //Serving the files on the dist folder
 app.use(express.static(DIST_DIR));
@@ -16,9 +17,10 @@ app.get("*", function (req, res) {
   res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 
-app.listen(PORT);
+http.listen(PORT, () => {
+  console.log("listen on " + PORT + ".");
+});
 
-const Room = require("./room");
-var r = new Room("abcdef");
-r.generateQuestionSequence();
-console.log(r.questionSequence);
+io.on('connection', (socket) => {
+  console.log('a user connected');
+});

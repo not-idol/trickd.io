@@ -6,8 +6,10 @@ module.exports = class Room {
     this._settings = {
       rounds: 5,
       timer: 30,
-      NumberOfQuestions: 10
+      numberOfQuestions: 10
     };
+    this.state = ""
+    this.round = 1;
   }
 
   addPlayer(player) {
@@ -45,7 +47,7 @@ module.exports = class Room {
       selected[i] = i;
     }
     selected = this.shuffle(selected);
-    var l = Math.min(this.settings.NumberOfQuestions, catalog.length)
+    var l = Math.min(this.settings.numberOfQuestions, catalog.length)
     for(let i = 0; i < l; i++) {
       this._questionSequence[i] = catalog[selected[i]];
     }
