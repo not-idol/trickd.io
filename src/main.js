@@ -15,21 +15,16 @@ socket.on('connect', () => {
   hello.innerHTML = "Hello, my socket id is: " + socket.id;
   var roomId = window.location.pathname.substr(1);
   if (roomId.length > 0) {
-    socket.emit("joinRoom",roomId);
+    socket.emit("findRoom",roomId);
   } else {
     socket.emit('createRoom', {username: defaultName, style: defaultStyle});
   }
 });
 
-socket.on('joinRoom', async function(room) {
-  if(room) {
-    hello.innerHTML = "Hello, this is the room: " + room.id + "\n" +
-                      "Rounds: " + room.settings.rounds + "\n" +
-                      "Question pool: " + room.settings.numberOfQuestions + "\n" +
-                      "timer: " + room.settings.timer;
-    console.log(room.settings);
-
-  } else {
-    hello.innerHTML = "Sry! But this room doesnt exists! Try again with a different url!";
-  }
+socket.on('findRoom', async function(room) {
+  hello.innerHTML = "Hello, this is the room: " + room.id + "\n" +
+                    "Rounds: " + room.settings.rounds + "\n" +
+                    "Question pool: " + room.settings.numberOfQuestions + "\n" +
+                    "timer: " + room.settings.timer;
+  console.log(room.settings);
 })

@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 app.use(express.static(DIST_DIR));
 
 //Send index.html when the user access the web
-app.get("*", function (req, res) {
+app.get("/", function (req, res) {
   res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 
@@ -28,7 +28,7 @@ app.get("/:id", function (req, res) {
   var id = String(req.params.id).replace("?", "");
   var room = RM.findRoom(id);
   if(room) {
-    res.status(200).send({m: "joined this room: " + room.id});
+    res.sendFile(path.join(DIST_DIR, "index.html"));
   } else {
     res.status(200).send({m: "sorry, this room doesnt exist!"});
   }
@@ -48,13 +48,13 @@ io.on('connection', (socket) => {
     console.log(socket.id + " created a new room: ", RM.createNewRoom(admin));
   });
 
-  socket.on('joinRoom', async function(roomId) {
+  socket.on('findRoom', async function(roomId) {
     var room = RM.findRoom(roomId);
     if (room) {
       socket.join(room.id);
-      socket.emit('joinRoom', {id: room.id, settings: room.settings });
+      socket.emit('findRoom', {id: room.id, settings: room.settings });
     } else {
-        socket.emit('joinRoom', null);
+        socket.emit('findRoom', null);
     }
   })
 });
