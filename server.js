@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 app.use(express.static(DIST_DIR));
 
 //Send index.html when the user access the web
-app.get("/", function (req, res) {
+app.get("*", function (req, res) {
   res.sendFile(path.join(DIST_DIR, "index.html"));
 });
 
@@ -41,7 +41,20 @@ http.listen(PORT, () => {
 io.on('connection', (socket) => {
   console.log('a user connected with id: ' + socket.id);
 
-  socket.on('createRoom', async function() {
-    console.log(socket.id + " created a new room: ", RM.createNewRoom());
+  const Player = require("./player");
+  socket.on('createRoom', async function(p) {
+    var admin = new Player(p.username, p.style, socket.id);
+    socket.player = {admin: true, username: admin.username, style: admin.style};
+    console.log(socket.id + " created a new room: ", RM.createNewRoom(admin));
+  });
+
+  socket.on('joinRoom', async function(roomId) {
+    var room = RM.findRoom(roomId);
+    if (room) {
+      socket.join(room.id);
+      socket.emit('joinRoom', {id: room.id, settings: room.settings });
+    } else {
+        socket.emit('joinRoom', null);
+    }
   })
 });

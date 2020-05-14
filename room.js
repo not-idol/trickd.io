@@ -10,6 +10,7 @@ module.exports = class Room {
     };
     this.state = ""
     this.round = 1;
+    this._admin;
   }
 
   addPlayer(player) {
@@ -39,6 +40,13 @@ module.exports = class Room {
     return this._questionSequence;
   }
 
+  get admin() {
+    return this._admin;
+  }
+
+  set admin(p) {
+    this._admin = p;
+  }
   generateQuestionSequence() {
     var fs = require('fs')
     var catalog = JSON.parse(fs.readFileSync('./catalog.json', 'utf8'));
