@@ -38,23 +38,42 @@ http.listen(PORT, () => {
   console.log("listen on " + PORT + ".");
 });
 
+const Player = require("./player");
 io.on('connection', (socket) => {
-  console.log('a user connected with id: ' + socket.id);
 
-  const Player = require("./player");
-  socket.on('createRoom', async function(p) {
-    var admin = new Player(p.username, p.style, socket.id);
-    socket.player = {admin: true, username: admin.username, style: admin.style};
-    console.log(socket.id + " created a new room: ", RM.createNewRoom(admin));
+  socket.on('createRoom', async function(admin) {
+    socket.player = new Player(socket.id, admin.name, admin.style, true);
+    var room = RM.createNewRoom();
+    newJoin(socket, room);
   });
 
-  socket.on('findRoom', async function(roomId) {
-    var room = RM.findRoom(roomId);
-    if (room) {
-      socket.join(room.id);
-      socket.emit('findRoom', {id: room.id, settings: room.settings });
-    } else {
-        socket.emit('findRoom', null);
+  socket.on('joinRoom', async function(data) {
+    if(socket.joinedRoom) {
+      return;
     }
-  })
+
+    var playerData = data.playerData;
+    var roomId = data.roomId;
+
+    if(RM.doesRoomExist(roomId)) {
+      socket.player = new Player(socket.id, playerData.name, playerData.style, false);
+      var room = RM.findRoom(roomId);
+      newJoin(socket, room);
+    } else {
+      socket.emit('roomDoesntExist');
+    }
+  });
+
+  function newJoin(socket, room) {
+    socket.leaveAll();
+    socket.join(room.id);
+    socket.joinedRoom = true;
+    RM.addNewPlayerToRoom(socket.player, room.id);
+    io.sockets.in(room.id).emit('joinRoom', {
+      id: room.id,
+      admin: room.admin.name,
+      players: room.infoPlayers
+    }
+  );
+  }
 });

@@ -8,23 +8,38 @@ var defaultStyle = {
   color: 'blue'
 }
 
-var defaultName = "Marten";
-var hello = document.getElementById("hello");
+var defaultName = String(Math.random());
 
 socket.on('connect', () => {
-  hello.innerHTML = "Hello, my socket id is: " + socket.id;
-  var roomId = window.location.pathname.substr(1);
-  if (roomId.length > 0) {
-    socket.emit("findRoom",roomId);
-  } else {
-    socket.emit('createRoom', {username: defaultName, style: defaultStyle});
+
+});
+
+socket.on('joinRoom', async function(room) {
+  document.getElementById('text').innerHTML = "Room from " + room.admin+
+  " send this link to friends: /" + room.id;
+
+  var pl = document.getElementById('playerlist');
+  pl.innerHTML = "";
+  for (let i = 0; i < room.players.length; i++) {
+    var node = document.createElement("LI");
+    var t = document.createTextNode(room.players[i].name);
+    node.appendChild(t);
+    pl.appendChild(node);
   }
 });
 
-socket.on('findRoom', async function(room) {
-  hello.innerHTML = "Hello, this is the room: " + room.id + "\n" +
-                    "Rounds: " + room.settings.rounds + "\n" +
-                    "Question pool: " + room.settings.numberOfQuestions + "\n" +
-                    "timer: " + room.settings.timer;
-  console.log(room.settings);
-})
+socket.on('roomDoesntExist', function() {
+  alert("This room doesnt exist, check the url!");
+});
+
+document.getElementById('createRoomButton').onclick = async function() {
+  socket.emit('createRoom', {name: defaultName, style: defaultStyle});
+}
+
+document.getElementById('joinRoomButton').onclick = async function() {
+  var roomId = window.location.pathname.substr(1);
+  if(roomId.length > 0) {
+    var data = {playerData: {name: defaultName, style: defaultStyle}, roomId: roomId};
+    socket.emit('joinRoom', data);
+  }
+}

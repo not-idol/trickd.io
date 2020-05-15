@@ -6,10 +6,9 @@ module.exports = class RoomManager {
     this._rooms = {};
   }
 
-  createNewRoom(p) {
-    var id = "bunnybutt";
+  createNewRoom() {
+    var id = String(Math.random());
     var room = new Room(id);
-    room.admin = p;
     this._rooms[id] = room;
     return room;
   }
@@ -18,4 +17,16 @@ module.exports = class RoomManager {
     return this._rooms[id];
   }
 
+  doesRoomExist(id) {
+    var x = this._rooms[id];
+    if(x) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  addNewPlayerToRoom(player, id) {
+    this._rooms[id].addPlayer(player);
+  }
 }

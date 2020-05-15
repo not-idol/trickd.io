@@ -15,6 +15,9 @@ module.exports = class Room {
 
   addPlayer(player) {
     this.players.push(player);
+    if(player.admin) {
+      this.admin = player;
+    }
   }
 
   removePlayer(player) {
@@ -36,6 +39,14 @@ module.exports = class Room {
     return this._players;
   }
 
+  get infoPlayers() {
+    var a = []
+    for (let i = 0; i < this.players.length; i++) {
+      a.push(this.players[i].info);
+    }
+    return a;
+  }
+
   get questionSequence() {
     return this._questionSequence;
   }
@@ -47,6 +58,7 @@ module.exports = class Room {
   set admin(p) {
     this._admin = p;
   }
+
   generateQuestionSequence() {
     var fs = require('fs')
     var catalog = JSON.parse(fs.readFileSync('./catalog.json', 'utf8'));
