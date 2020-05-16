@@ -54,9 +54,9 @@ io.on('connection', (socket) => {
   }
 
   socket.on('createNewGame', async function(creator) {
+    socket.player = new Player(socket.id, creator.username, creator.style, true);
     const unlock = await lock('lockGameCreation');
     try {
-      socket.player = new Player(socket.id, creator.username, creator.style, true);
       var createdRoom = RM.createNewGame(socket.player);
       newJoin(createdRoom, socket);
     } catch (e) {
@@ -71,9 +71,9 @@ io.on('connection', (socket) => {
     if(!room) {
       socket.emit('reloadPage');
     } else {
+      socket.player = new Player(socket.id, player.username, player.style, false);
       const unlock = await lock('lockLobbyInteraction');
       try {
-        socket.player = new Player(socket.id, player.username, player.style, false);
         var room = RM.addPlayerToRoom(room.id, socket.player);
         newJoin(room, socket);
       } catch (e) {

@@ -1,8 +1,10 @@
 require('file-loader?name=[name].[ext]!./index.html');
 import './css/style.css'
+import Logo from './logo.svg';
 
 const io = require("socket.io-client");
 var socket = io('http://localhost:3030');
+
 
 var defaultStyle = {
   color: 'blue'
@@ -22,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var lobbySection = document.getElementById('lobby');
   var joinGameSection = document.getElementById('joinLobby');
 
+  document.getElementById('logo').innerHTML = Logo;
   document.getElementById('createGameButton').onclick = function() {
     socket.emit('createNewGame', {username: username, style: style});
   }
