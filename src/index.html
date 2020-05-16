@@ -6,9 +6,26 @@
 	<script defer src="./bundle.js"></script>
 </head>
 <body>
-	<div id="text"></div>
-	<button id="createRoomButton">Create Room</button>
-	<button id="joinRoomButton">JOIN!</button>
-	<div id="playerlist"></div>
+
+	<div id="styling">
+		<label for="username">Username</label>
+		<input type="text" id="username" name="username">
+		<label for="color">Color</label>
+		<input type="text" id="color" name="color">
+	</div>
+
+	<div id="createGame">
+		<button id="createGameButton">Create a Game!</button>
+	</div>
+
+	<div id="joinLobby">
+		<button id="joinGameButton">Join the Game!</button>
+	</div>
+
+	<div id="lobby">
+		<h1>LOBBY</h1>
+		<div id="players"></div>
+		<p id="joinLink"></p>
+	</div>
 </body>
 </html>

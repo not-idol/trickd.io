@@ -7,39 +7,76 @@ var socket = io('http://localhost:3030');
 var defaultStyle = {
   color: 'blue'
 }
+var defaultUsername = 'Bob';
 
-var defaultName = String(Math.random());
+var username = defaultUsername;
+var style = defaultStyle;
 
 socket.on('connect', () => {
-
+  console.log('Connected to the servers!');
 });
 
-socket.on('joinRoom', async function(room) {
-  document.getElementById('text').innerHTML = "Room from " + room.admin+
-  " send this link to friends: /" + room.id;
+document.addEventListener("DOMContentLoaded", function(event) {
+  var stylingSection = document.getElementById('styling');
+  var createGameSection = document.getElementById('createGame');
+  var lobbySection = document.getElementById('lobby');
+  var joinGameSection = document.getElementById('joinLobby');
 
-  var pl = document.getElementById('playerlist');
-  pl.innerHTML = "";
-  for (let i = 0; i < room.players.length; i++) {
-    var node = document.createElement("LI");
-    var t = document.createTextNode(room.players[i].name);
-    node.appendChild(t);
-    pl.appendChild(node);
+  document.getElementById('createGameButton').onclick = function() {
+    socket.emit('createNewGame', {username: username, style: style});
   }
-});
-
-socket.on('roomDoesntExist', function() {
-  alert("This room doesnt exist, check the url!");
-});
-
-document.getElementById('createRoomButton').onclick = async function() {
-  socket.emit('createRoom', {name: defaultName, style: defaultStyle});
-}
-
-document.getElementById('joinRoomButton').onclick = async function() {
-  var roomId = window.location.pathname.substr(1);
-  if(roomId.length > 0) {
-    var data = {playerData: {name: defaultName, style: defaultStyle}, roomId: roomId};
-    socket.emit('joinRoom', data);
+  document.getElementById('joinGameButton').onclick = function() {
+    socket.emit('joinGame', {username: username, style: style, requestedRoomId: window.location.pathname.replace("/", "").replace("?", "")});
   }
-}
+  document.getElementById('username').addEventListener('input', function (evt) {
+    username = this.value || defaultUsername;
+  });
+
+  document.getElementById('color').addEventListener('input', function (evt) {
+    style.color = this.value || defaultStyle.color;
+  });
+
+  showSection(stylingSection, true);
+  showSection(createGameSection, true);
+  showSection(lobbySection, false);
+  showSection(joinGameSection, false);
+
+  var path = window.location.pathname.replace("/", "").replace("?", "");
+  if(path.length > 0) {
+    showSection(createGameSection, false);
+    showSection(joinGameSection, true);
+  }
+
+  function showSection(section, b) {
+    section.style.display = b ?  "block" : "none";
+  }
+
+  function createPTag(text) {
+    var para = document.createElement("P");
+    para.innerText = text;
+    return para;
+  }
+
+  socket.on('joinLobby', function(id) {
+    var joinUrl = window.location.origin + "/" + id;
+    showSection(stylingSection, false);
+    showSection(createGameSection, false);
+    showSection(joinGameSection, false);
+    showSection(lobbySection, true);
+    document.getElementById("joinLink").innerText = "Send this link to your friends: " + joinUrl;
+  });
+
+  socket.on('newJoinToLobby', function(players) {
+    console.log(players);
+    var playerSection = document.getElementById('players');
+    playerSection.innerHTML = "";
+    for(let i = 0; i < players.length; i++) {
+      playerSection.appendChild(createPTag(players[i].username + (players[i].admin ? " (admin)" : "")));
+    }
+  });
+
+  socket.on('reloadPage', function() {
+    location.reload();
+  });
+
+});

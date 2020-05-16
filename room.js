@@ -1,62 +1,40 @@
 module.exports = class Room {
   constructor(id) {
-    this._id = id;
-    this._players = [];
-    this._questionSequence = [];
-    this._settings = {
+    this.id = id;
+    this.players = [];
+    this.questionSequence = [];
+    this.settings = {
       rounds: 5,
       timer: 30,
       numberOfQuestions: 10
     };
     this.state = ""
     this.round = 1;
-    this._admin;
+    this.admin;
   }
 
   addPlayer(player) {
     this.players.push(player);
-    if(player.admin) {
-      this.admin = player;
-    }
   }
 
   removePlayer(player) {
-    this._players = this._players.filter(p => p.id != player.id);
+    this.players = this.players.filter(p => p.id != player.id);
   }
 
-  get id() {
-    return this._id;
-  }
-
-  get settings() {
-    return this._settings;
-  }
-  set settings(s) {
-    this._settings = s;
-  }
-
-  get players() {
-    return this._players;
-  }
-
-  get infoPlayers() {
-    var a = []
-    for (let i = 0; i < this.players.length; i++) {
-      a.push(this.players[i].info);
+  getPlayers() {
+    var a = [];
+    for(let i = 0; i < this.players.length; i++) {
+      var t = {...this.players[i]};
+      t.id = null;
+      a.push(t);
     }
     return a;
   }
 
-  get questionSequence() {
-    return this._questionSequence;
-  }
-
-  get admin() {
-    return this._admin;
-  }
-
-  set admin(p) {
-    this._admin = p;
+  setNewAdmin() {
+    this.admin = this.players[0];
+    this.players[0].admin = true;
+    //console.log(this.players);
   }
 
   generateQuestionSequence() {
@@ -69,7 +47,7 @@ module.exports = class Room {
     selected = this.shuffle(selected);
     var l = Math.min(this.settings.numberOfQuestions, catalog.length)
     for(let i = 0; i < l; i++) {
-      this._questionSequence[i] = catalog[selected[i]];
+      this.questionSequence[i] = catalog[selected[i]];
     }
   }
 
