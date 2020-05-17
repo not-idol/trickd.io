@@ -34,7 +34,7 @@ module.exports = class Room {
   setNewAdmin() {
     this.admin = this.players[0];
     this.players[0].admin = true;
-    //console.log(this.players);
+    return this.admin;
   }
 
   generateQuestionSequence() {

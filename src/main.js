@@ -1,6 +1,6 @@
 require('file-loader?name=[name].[ext]!./index.html');
 import './css/style.css'
-import Logo from './logo.svg';
+import Logo from './images/logo.svg';
 
 const io = require("socket.io-client");
 var socket = io('http://localhost:3030');
@@ -39,19 +39,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
     style.color = this.value || defaultStyle.color;
   });
 
-  showSection(stylingSection, true);
-  showSection(createGameSection, true);
-  showSection(lobbySection, false);
-  showSection(joinGameSection, false);
+  showHomeStage();
 
   var path = window.location.pathname.replace("/", "").replace("?", "");
   if(path.length > 0) {
-    showSection(createGameSection, false);
-    showSection(joinGameSection, true);
+    showJoinStage();
   }
 
   function showSection(section, b) {
     section.style.display = b ?  "block" : "none";
+  }
+
+  function showHomeStage() {
+    showSection(stylingSection, true);
+    showSection(createGameSection, true);
+    showSection(lobbySection, false);
+    showSection(joinGameSection, false);
+  }
+
+  function showJoinStage() {
+    showSection(createGameSection, false);
+    showSection(joinGameSection, true);
+  }
+
+  function showLobbyStage() {
+    showSection(stylingSection, false);
+    showSection(createGameSection, false);
+    showSection(joinGameSection, false);
+    showSection(lobbySection, true);
   }
 
   function createPTag(text) {
@@ -62,20 +77,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
   socket.on('joinLobby', function(id) {
     var joinUrl = window.location.origin + "/" + id;
-    showSection(stylingSection, false);
-    showSection(createGameSection, false);
-    showSection(joinGameSection, false);
-    showSection(lobbySection, true);
+    showLobbyStage();
     document.getElementById("joinLink").innerText = "Send this link to your friends: " + joinUrl;
+    document.getElementById("joinLink").href = joinUrl;
   });
 
   socket.on('newJoinToLobby', function(players) {
-    console.log(players);
     var playerSection = document.getElementById('players');
     playerSection.innerHTML = "";
     for(let i = 0; i < players.length; i++) {
       playerSection.appendChild(createPTag(players[i].username + (players[i].admin ? " (admin)" : "")));
     }
+  });
+
+  socket.on('unlockSettings', function() {
+    document.getElementById("rounds").disabled = false;
+    document.getElementById("questionQuantity").disabled = false;
+    document.getElementById("timer").disabled = false;
   });
 
   socket.on('reloadPage', function() {

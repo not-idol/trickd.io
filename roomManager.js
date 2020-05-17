@@ -26,13 +26,14 @@ module.exports = class RoomManager {
   removePlayerFromRoom(id, player) {
     //console.log(player);
     if(this.rooms[id]) {
+      var admin = this.rooms[id].admin;
       this.rooms[id].removePlayer(player);
       if(this.rooms[id].players.length > 0) {
         if(player.admin) {
-          this.rooms[id].setNewAdmin();
+          admin = this.rooms[id].setNewAdmin();
         }
       }
-      return this.rooms[id].getPlayers();
+      return {players: this.rooms[id].getPlayers(), admin: admin};
     } else {
       return null;
     }
