@@ -1,3 +1,4 @@
+'use strict';
 require("./parser");
 const config = require("./config");
 const path = require("path");
@@ -26,7 +27,7 @@ app.use(express.static(DIST_DIR));
 //Send index.html when the user access the web
 app.get("/:id", function (req, res, next) {
   var id = String(req.params.id).replace("?", "");
-  if(RM.getRoom(id)) {
+  if(RM.getLobby(id)) {
     next();
   } else {
     res.status(200).send({m: "room not found mate."});
@@ -42,5 +43,5 @@ http.listen(PORT, () => {
 });
 
 io.on('connection', (socket) => {
-  require('./socketLobby')(io, socket, lock, RM, require("./player"));
+  require('./socket')(io, socket, lock, RM, require("./player"));
 });

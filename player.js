@@ -1,7 +1,7 @@
+'use strict';
 module.exports = class Player {
 
-  constructor(id, name, style, admin) {
-    this.id = id;
+  constructor(name, style, admin) {
     this.username = name;
     this.style = style;
     this.points = 0;

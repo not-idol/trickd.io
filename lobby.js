@@ -1,7 +1,8 @@
-module.exports = class Room {
-  constructor(id) {
-    this.id = id;
-    this.players = [];
+'use strict';
+module.exports = class Lobby{
+  constructor(url) {
+    this.url = url;
+    this.sockets = [];
     this.questionSequence = [];
     this.settings = {
       rounds: 5,
@@ -10,31 +11,29 @@ module.exports = class Room {
     };
     this.state = ""
     this.round = 1;
-    this.admin;
   }
 
-  addPlayer(player) {
-    this.players.push(player);
+  addPlayer(socket) {
+    this.sockets.push(socket);
   }
 
-  removePlayer(player) {
-    this.players = this.players.filter(p => p.id != player.id);
-  }
-
-  getPlayers() {
-    var a = [];
-    for(let i = 0; i < this.players.length; i++) {
-      var t = {...this.players[i]};
-      t.id = null;
-      a.push(t);
-    }
-    return a;
+  removePlayer(socket) {
+    this.sockets = this.sockets.filter(s => s.id != socket.id);
   }
 
   setNewAdmin() {
-    this.admin = this.players[0];
-    this.players[0].admin = true;
-    return this.admin;
+    this.sockets[0].player.admin = true;
+  }
+
+  getPlayers() {
+    var p = [];
+    var q = [];
+    for(let i = 0; i < this.sockets.length; i++) {
+      var s = this.sockets[i];
+      q.push(s);
+      p.push(s.player)
+    }
+    return {players: p, sockets: q};
   }
 
   generateQuestionSequence() {

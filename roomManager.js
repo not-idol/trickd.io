@@ -1,50 +1,42 @@
-const Room = require("./room");
+'use strict';
+const Lobby = require("./lobby");
 const Player = require("./player");
 
-module.exports = class RoomManager {
+module.exports = class LobbyManager {
   constructor() {
-    this.rooms = {};
+    this.lobbies = {};
   }
 
-  createNewGame(creator) {
-    var id = getLink();
-    while((id in this.rooms)) {
-      id = getLink();
+  createNewLobby() {
+    var url = getLink();
+    while((url in this.lobbies)) {
+      url = getLink();
     }
-    this.rooms[id] = new Room(id);
-    this.rooms[id].admin = creator;
-    this.addPlayerToRoom(id, creator);
-    return this.rooms[id];
+    this.lobbies[url] = new Lobby(url);
+    return this.lobbies[url];
   }
 
-  addPlayerToRoom(id, player) {
-    player.roomId = id;
-    this.rooms[id].addPlayer(player);
-    return this.rooms[id];
+  addPlayerToLobby(lobby, socket) {
+    var url = lobby.url;
+    this.lobbies[url].addPlayer(socket);
+    return this.lobbies[url];
   }
 
-  removePlayerFromRoom(id, player) {
-    //console.log(player);
-    if(this.rooms[id]) {
-      var admin = this.rooms[id].admin;
-      this.rooms[id].removePlayer(player);
-      if(this.rooms[id].players.length > 0) {
-        if(player.admin) {
-          admin = this.rooms[id].setNewAdmin();
-        }
-      }
-      return {players: this.rooms[id].getPlayers(), admin: admin};
-    } else {
-      return null;
-    }
+  removePlayerFromLobby(lobby, socket) {
+    this.lobbies[lobby.url].removePlayer(socket);
+    return this.lobbies[lobby.url];
   }
 
-  deleteRoom(id) {
-    delete this.rooms[id];
+  setNewAdmin(lobby) {
+    this.lobbies[lobby.url].setNewAdmin();
   }
 
-  getRoom(id) {
-    return this.rooms[id];
+  deleteLobby(lobby) {
+    delete this.lobbies[lobby.url];
+  }
+
+  getLobby(url) {
+    return this.lobbies[url];
   }
 }
 

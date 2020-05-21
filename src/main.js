@@ -29,7 +29,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     socket.emit('createNewGame', {username: username, style: style});
   }
   document.getElementById('joinGameButton').onclick = function() {
-    socket.emit('joinGame', {username: username, style: style, requestedRoomId: window.location.pathname.replace("/", "").replace("?", "")});
+    var requestedLobbyUrl = window.location.pathname.replace("/", "").replace("?", "");
+    socket.emit('join', {username: username, style: style, requestedLobbyUrl: requestedLobbyUrl});
   }
   document.getElementById('username').addEventListener('input', function (evt) {
     username = this.value || defaultUsername;
@@ -75,25 +76,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
     return para;
   }
 
-  socket.on('joinLobby', function(id) {
-    var joinUrl = window.location.origin + "/" + id;
-    showLobbyStage();
-    document.getElementById("joinLink").innerText = "Send this link to your friends: " + joinUrl;
-    document.getElementById("joinLink").href = joinUrl;
-  });
+  var joined = false;
+  socket.on('join', function(data) {
+    if(!joined) {
+      joined = true;
+      var joinUrl = window.location.origin + "/" + data.url;
+      showLobbyStage();
+      document.getElementById("joinLink").innerText = "Send this link to your friends: " + joinUrl;
+      document.getElementById("joinLink").href = joinUrl;
+    }
 
-  socket.on('newJoinToLobby', function(players) {
+    var players = data.players;
     var playerSection = document.getElementById('players');
     playerSection.innerHTML = "";
     for(let i = 0; i < players.length; i++) {
       playerSection.appendChild(createPTag(players[i].username + (players[i].admin ? " (admin)" : "")));
     }
-  });
 
-  socket.on('unlockSettings', function() {
-    document.getElementById("rounds").disabled = false;
-    document.getElementById("questionQuantity").disabled = false;
-    document.getElementById("timer").disabled = false;
+    if(data.admin) {
+      document.getElementById("rounds").disabled = false;
+      document.getElementById("questionQuantity").disabled = false;
+      document.getElementById("timer").disabled = false;
+    }
   });
 
   socket.on('reloadPage', function() {
