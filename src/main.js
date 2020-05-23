@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   var lobbySection = document.getElementById('lobby');
   var joinGameSection = document.getElementById('joinLobby');
 
-  document.getElementById('logo').innerHTML = Logo;
+  document.getElementById('logo').src = Logo;
   document.getElementById('createGameButton').onclick = function() {
     socket.emit('createNewGame', {username: username, style: style});
   }
