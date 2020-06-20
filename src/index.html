@@ -1,61 +1,270 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html class="no-js" lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Simple Webpack App</title>
-	<script defer src="./bundle.js"></script>
+  <meta charset="utf-8">
+
+  <!--====== Title ======-->
+  <title>AppLand - App Landing Page Template</title>
+
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="bundle.js"></script>
 </head>
+
 <body>
-	<img class="logo" id="logo"></img>
+  <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
+  <![endif]-->
 
-	<div id="styling">
-		<label for="username">Username</label>
-		<input type="text" id="username" name="username">
-		<label for="color">Color</label>
-		<input type="text" id="color" name="color">
-	</div>
+  <!--====== PRELOADER PART START ======-->
 
-	<div id="createGame">
-		<button id="createGameButton">Create a Game!</button>
-	</div>
+  <div class="preloader">
+    <div class="loader">
+      <div class="ytp-spinner">
+        <div class="ytp-spinner-container">
+          <div class="ytp-spinner-rotator">
+            <div class="ytp-spinner-left">
+              <div class="ytp-spinner-circle"></div>
+            </div>
+            <div class="ytp-spinner-right">
+              <div class="ytp-spinner-circle"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<div id="joinLobby">
-		<button id="joinGameButton">Join the Game!</button>
-	</div>
+  <!--====== PRELOADER PART ENDS ======-->
 
-	<div id="lobby">
-		<h1>LOBBY</h1>
+  <!--====== HEADER PART START ======-->
 
-		<div id="settings">
-			<label for="rounds">Rounds</label>
-			<select id="rounds" disabled>
-				<option value="3" selected="selected">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
-				<option value="6">6</option>
-			</select>
+  <div class="navbar-area">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <nav class="navbar navbar-expand-lg">
+            <a class="navbar-brand" href="index.html">
+              <img id="logo" alt="Logo" style="width:100%">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="toggler-icon"></span>
+              <span class="toggler-icon"></span>
+              <span class="toggler-icon"></span>
+            </button>
 
-			<label for="questionQuantity">How many Questions?</label>
-			<select id="questionQuantity" disabled>
-				<option value="5" selected="selected">5</option>
-				<option value="10">10</option>
-				<option value="15">15</option>
-				<option value="20">20</option>
-			</select>
+            <div class="collapse navbar-collapse sub-menu-bar" id="navbarSupportedContent">
+              <ul id="nav" class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                  <a class="page-scroll" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="page-scroll" href="#contact">Discord</a>
+                </li>
+                <li class="nav-item">
+                  <a class="page-scroll" href="#discord">Impressum</a>
+                </li>
 
-			<label for="timer">Writing time in seconds</label>
-			<select id="timer" disabled>
-				<option value="30" selected="selected">30</option>
-				<option value="60">60</option>
-				<option value="90">90</option>
-				<option value="120">120</option>
-			</select>
-		</div>
+              </ul>
+            </div> <!-- navbar collapse -->
+          </nav> <!-- navbar -->
+        </div>
+      </div> <!-- row -->
+    </div> <!-- container -->
+  </div> <!-- navbar area -->
 
-		<h2>PLAYERS</h2>
-		<div id="players"></div>
-		<h5>INVITE</h2>
-		<a target="_blank" id="joinLink"></a>
-	</div>
+  <div id="home" class="header-hero bg_cover d-lg-flex align-items-center">
+    <div class="shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-7"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+      <div class="shape shape-6"></div>
+      <div class="shape shape-8"></div>
+      <div class="shape shape-9"></div>
+      <div class="header-shape-1"></div> <!-- header shape -->
+      <div class="header-shape-2">
+        <img id="footer-shape"  alt="shape">
+      </div> <!-- header shape -->
+    </div>
+
+    <div id="startup" class="container">
+      <div class="row align-items-center justify-content-center justify-content-lg-between">
+        <div class="col-lg-6 col-md-10">
+          <div class="header-hero-content">
+            <h3 class="header-title wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.2s"><span>Willkommen</span> auf trickd.io, dem lustigen online multiplayer Satzbau-Spiel</h3>
+            <p class="text wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.6s" style="color:#fff">Lege deine Freunde mit deinen genialsten und lustigsten Antworten herein, während du versuchst, die wirklich wahre Antwort zu entlarfen.
+              Ein Spiel für alle, vollkommen kostenlos.</p>
+
+            <input id="nick" class="form-control" type="text" autocomplete="off" spellcheck="false" placeholder="Nickname eingeben" maxlength="20">
+            <ul class="d-flex">
+              <li id="createlobby"><a rel="nofollow" class="main-btn wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.8s">Lobby erstellen</a></li>
+              <li id="joinlobby" style="display:none"><a rel="nofollow" class="main-btn wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.8s">Lobby beitreten</a></li>
+            </ul>
+          </div> <!-- header hero content -->
+        </div>
+        <div class="col-lg-4 col-md-6 col-sm-6 col-10">
+          <div class="header-image">
+            <div class="image-shape wow fadeInRightBig" data-wow-duration="1.3s" data-wow-delay="0.8s">
+              <img id="footer-shape-1" alt="shape">
+            </div>
+          </div> <!-- header image -->
+        </div>
+      </div> <!-- row -->
+    </div> <!-- container -->
+
+
+
+    <div id="lobby" class="gameContainer">
+
+      <div id="gameSettings" style="display: none;">
+
+
+        <div class="form-group form-row align-items-center">
+          <label class="col-sm-4 col-form-label">Anzahl der Runden:</label>
+          <div class="input-group input-group-sm col-sm-3 p-0">
+            <select class="form-control form-control-sm p-1" id="gameSettingsRounds">
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6" selected="">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="12">12</option>
+              <option value="14">14</option>
+              <option value="16">16</option>
+            </select>
+            <div class="input-group-append">
+              <span class="input-group-text">Runden</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group form-row align-items-center">
+          <label class="col-sm-4 col-form-label">Zeit pro Runde:</br>(120 Sekunden empfohlen)</label>
+          <div class="input-group input-group-sm col-sm-3 p-0">
+            <select class="form-control form-control-sm p-1" id="gameSettingsRoundTime">
+              <option value="30">30</option>
+
+              <option value="60">60</option>
+              <option value="90">90</option>
+
+              <option value="120" selected="">120</option>
+
+              <option value="190">190</option>
+
+              <option value="245">240</option>
+            </select>
+            <div class="input-group-append">
+              <span class="input-group-text">Sekunden</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group align-items-center">
+
+          <label>How to play:</label>
+
+          <textarea readonly maxlength="20000" class="form-control form-control-sm" rows="3"
+            placeholder="Zu Beginn jeder Runde wird im oberen Bereich des Spielfelds eine Frage oder ein unvollständiger Satz gezeigt. Jeder Spieler muss sich daraufhin in der vorgegebenen Zeit eine gelungene Antwort einfallen lassen! Hat jeder Spieler eine Antwort gegeben oder ist die Zeit abgelaufen, geht es in die zweite Runde.Nun werden alle Antworten, inklusive der wirklich richtigen Antwort, anonym angezeigt. Jeder Spieler darf sich eine Antwort aus allen aussuchen (natürlich nicht die eigene). Sollte ein Spieler deine Antwort auswählen, bekommst du Punkte! Du selbst willst aber die eigentlich richtige Antwort finden, damit du dir zusätzliche Punke ergatterst."
+            style="height:300px"></textarea>
+        </div>
+        <div class="form-group align-items-center">
+          <div class="input-group" style="margin-top:6px;width:330px;float:left;">
+            <div id="gameSettingsRoomInfoLinkGroup">
+              <div class="copyLinkHover">Hover over me to see the link!</div>
+              <input id="gameSettingsRoomInfoLink" type="text" class="form-control" readonly="" value="https://trickd.io">
+            </div>
+            <div class="input-group-append">
+              <button class="btn btn-success" type="button" onclick="copy('gameSettingsRoomInfoLink')" style="height: 35px;margin-left: -5px;padding-top: 5px;">Copy</button>
+            </div>
+          </div>
+          <button id="gameSettingsStart" class="main-btn wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.8s" type="button">Start</button>
+
+        </div>
+      </div>
+
+      <div id="gamerunning" style="display: block;">
+
+
+        <div class="form-group align-items-center">
+
+          <label>Deine Antwort: (Achte auf Rechtschreibung und Zeichensetzung!)</label>
+
+          <textarea id="answerField" maxlength="20000" class="form-control form-control-sm" rows="3"
+            placeholder="Deine Antwort"
+            style="height:300px"></textarea>
+        </div>
+        <div class="form-group align-items-center">
+
+          <button id="sendAnswer" class="main-btn wow fadeInLeftBig" data-wow-duration="1.3s" data-wow-delay="0.8s" type="button">Antwort absenden</button>
+
+        </div>
+      </div>
+
+
+
+
+      <div id="gameInterface">
+        <h5 id="gameClock" style="display: none;">0</h5>
+        <h5 id="gameRound" style="display: none;">1/3</h5>
+        <h5 id="question" class="question"></h5>
+
+      </div>
+      <ul id="gamePlayersList" class="gameSettingsPlayerList">
+        <li id="gamePlayersListPlayer-58600">
+          <div class="gameAvatarCircle ">
+            <div class="gameSettingsAvatar avatar">
+            </div>
+          </div>
+          <div class="gameAvatarContainer">
+            <span class="gameSettingsAvatarName">player1</span>
+            <span class="gameSettingsScore">1250</span>
+          </div>
+        </li>
+
+      </ul>
+      <div id="gameCanvas" style="display: none;">
+        <div id="gameCanvasStickyCenter" style="transform: translateY(5%) scale(0.8);">
+          <div id="gameCanvasStickyContainer">
+            <div id="gameCanvasSticky">
+
+            </div>
+          </div>
+        </div>
+        <div id="gameCanvasInner">
+          <div id="canvasCover" style="display: none;">
+            <div id="gameWinners" style="transform: translate(-50%, -47%) scale(0);"></div>
+          </div>
+          <canvas id="canvas" width="800" height="600" oncontextmenu="return false;" style="user-select: none; cursor: default;"></canvas>
+        </div>
+      </div>
+      <div class="columnRight columnRightSettings">
+
+        <div class="card settings" id="gameChat" style="height: calc(100% - 180px);">
+          <div class="card-body">
+            <div id="gameChatScrollAlert" style="display: none;">
+              <i class="fas fa-arrow-down"></i> Scroll down to see new messages <i class="fas fa-arrow-down"></i>
+            </div>
+            <ul id="gameChatList">
+              <li class="chatAdmin" style="">
+                <font color="gray">kaschdanie joined the room!</font>
+              </li>
+              <li class="chatAdmin" style="">
+                <font color="red">Not enough players to start!</font>
+              </li>
+            </ul>
+            <input id="gameChatInput" type="text" maxlength="100" autocomplete="off" class="form-control" placeholder="Type your guess/chat here">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- header hero -->
 </body>
 </html>
