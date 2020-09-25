@@ -1,6 +1,7 @@
 var $ = require('jquery');
 var jQuery = require('jquery');
 var WOW = require('wowjs');
+new WOW().init();
 
 $(function () {
 
@@ -9,6 +10,7 @@ $(function () {
     //===== Prealoder
 
     $(window).on('load', function (event) {
+        alert("hmm")
         $('.preloader').delay(500).fadeOut(500);
     });
 
@@ -118,13 +120,5 @@ $(function () {
 
 
     //=====  WOW active
-
-    var wow = new WOW.WOW();
-    wow.init();
-    wow.sync();
-
-
-
-
 
 });
